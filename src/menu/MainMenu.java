@@ -1,7 +1,11 @@
 package menu;
+import java.util.ArrayList;
+
 import game.MainGame;
 import ucigame.Image;
 import ucigame.Sprite;
+import utilies.ClientConfig;
+import utilies.ClientMap;
 
 /**
  * 
@@ -23,13 +27,13 @@ public class MainMenu{
 	
 	public MainMenu(MainGame game) {
 		this.game = game;
-		Image connectButtonImage = game.getImage("resources/connect_button.jpg");
+		Image connectButtonImage = game.getImage("resources/connect_button.png");
 		// create a connect button		
 		connectButton = game.makeButton("Connect", connectButtonImage,
 				connectButtonImage.width(), connectButtonImage.height()/3);
 		connectButton.position(MainGame.windowCentreX - connectButton.width()/2, MainGame.windowCentreY - 2 * connectButton.height());
 				
-		Image quitButtonImage = game.getImage("resources/quit_button.jpg");
+		Image quitButtonImage = game.getImage("resources/quit_button.png");
 		//create a quit button
 		quitButton = game.makeButton("Quit", quitButtonImage,
 				quitButtonImage.width(), quitButtonImage.height()/3);
@@ -43,7 +47,16 @@ public class MainMenu{
 	 * 
 	 */
 	public void draw(){
-		
+		if(!ClientMap.isEmpty()){
+			ArrayList<ClientConfig> clients = ClientMap.getClients();
+			for(int i = 0; i < clients.size(); i++){				
+				
+				ClientConfig client = clients.get(i);
+				
+				game.canvas.putText("Client " + client.getId() + " IP: " + client.getAddress(), 50, 50+50*i);
+
+			}
+		}
 		connectButton.draw();
 		quitButton.draw();
 	}

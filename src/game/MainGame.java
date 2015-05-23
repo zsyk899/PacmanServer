@@ -3,6 +3,7 @@ import menu.MainMenu;
 import menu.ServerMenu;
 import controller.GameController;
 import server.Server;
+import server.TCPServer;
 import ucigame.Sprite;
 import ucigame.Ucigame;
 
@@ -26,10 +27,11 @@ public class MainGame extends Ucigame{
     
     private final int port = 8899;
     private Server server;
+    private TCPServer connectionServer;
     
     
-    public static final int windowWidth = 600;
-    public static final int windowHeight = 600;
+    public static final int windowWidth = 500;
+    public static final int windowHeight = 500;
     public static final int windowCentreX = windowWidth/2;
     public static final int windowCentreY = windowHeight/2;
     		
@@ -76,7 +78,9 @@ public class MainGame extends Ucigame{
     private void showServermenu(){
     	// initialize menu
 		menu = new ServerMenu(this);
-		server = new Server(port);
+		menu.hideAllClientButton();
+		//server = new Server("localhost", port);
+		connectionServer = new TCPServer(port, this);
 		showScene(SceneMode.SERVERMENU);
     }
     
@@ -126,7 +130,7 @@ public class MainGame extends Ucigame{
     
     /**
 	 * 
-	 * starts a single-player game.
+	 * Invoked when the start button on menu is clicked
 	 * 
 	 */
 	public void onClickStart() {
@@ -138,12 +142,28 @@ public class MainGame extends Ucigame{
 	}
     
     /**
-     * Quit the game
+     * Invoked when quit button on menu is clicked
      */
     public void onClickQuit(){
     	System.exit(0);
     }
     
+    public void onClickClientOne(){}
+    
+	public void onClickClientTwo(){}
+	
+	public void onClickClientThree(){}
+	
+	public void onClickClientFour(){}
+	
+	
+	
+	public void showConnectedClients(int clients){
+		menu.showButton(clients);
+	}
+	
+	
+	
 	/**
 	 * Displays the specified scene onto the window, while also storing the
 	 * scene for later reference
@@ -175,4 +195,6 @@ public class MainGame extends Ucigame{
 		
 		return s;
 	}
+	
+	
 }

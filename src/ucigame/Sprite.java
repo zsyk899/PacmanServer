@@ -96,9 +96,6 @@ public class Sprite {
 	int width, height;
 	double currX, currY;
 
-	public double getMotion(){
-		return deltaX;
-	}
 	private void initialize()
 	{
 		ucigame = Ucigame.ucigameObject;

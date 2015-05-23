@@ -31,7 +31,6 @@ public class Pacman extends ControllableObject{
 		super.rotate(angle);
 		super.move();
 		stopIfCollidesWith(MainGame.TOPEDGE, MainGame.BOTTOMEDGE, MainGame.LEFTEDGE, MainGame.RIGHTEDGE);
-		System.out.println(getMotion());
 		super.draw();
 	}
 
