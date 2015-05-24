@@ -3,14 +3,19 @@ package server;
 import game.MainGame;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import utilies.ClientConfig;
+import utilies.ClientMap;
 import utilies.ConnectionMessageQueue;
 
 public class TCPServer {
@@ -40,6 +45,8 @@ public class TCPServer {
                         clients.add(newConnection);
                         newConnection.confirmConnection();
                         showConnectedClients(clients.size());
+                        System.out.println("client added");
+                        System.out.println(clients.size());
                     }
                     catch(IOException e){ e.printStackTrace(); }
                 }
@@ -55,7 +62,8 @@ public class TCPServer {
                     String message = ConnectionMessageQueue.popMessage();
 					// Do some handling here...
 					System.out.println("Message Received: " + message);
-					
+					if(message!=null)
+						parseMessage(message);
                 }
             }
         };
@@ -67,11 +75,26 @@ public class TCPServer {
     private void showConnectedClients(int clients){
     	game.showConnectedClients(clients);
     }
+    
     public void parseMessage(String message){
     	try {
+    		System.out.println("parsing");
 			JSONObject object = (JSONObject) parser.parse(message);
-			if (object.get("request") == "200"){
+			if(object.containsKey("request")){
+				int code = Integer.parseInt((String) object.get("request"));
+				System.out.println("code" + code);
 
+				switch(code){
+					case 101:
+						if(object.containsKey("address")){
+							String address = (String)object.get("address");
+							System.out.println("InetAddress: " + address);
+							diconnectClient(address);
+							System.out.println("Received disconnect message, client removed");
+							System.out.println(clients);
+						}
+						break;
+				}
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -79,4 +102,39 @@ public class TCPServer {
 		}
     	
     }
+
+	private void diconnectClient(String address) {
+		// TODO Auto-generated method stub
+		ClientMap.removeClient(address);
+		TCPServerConnection target = null;
+		for(TCPServerConnection connection: clients){
+
+			if(connection.address.getHostAddress().equals(address)){
+				target = connection;
+
+			}
+		}
+		game.removeClient();
+		System.out.println("Client " + address + " removed");
+
+		clients.remove(target);
+		System.out.println("size:" + clients.size());
+		
+//		Iterator<TCPServerConnection> iterator = clients.iterator();
+//		System.out.println(iterator.toString());
+//		while(iterator.hasNext()){
+//			TCPServerConnection connection = iterator.next();
+//			if(connection.address == address){
+//				iterator.remove();
+//				game.removeClient();
+//				System.out.println("Client " + address + " removed");
+//			}
+//		}
+		
+
+	}
+	
+	public int getClients(){
+		return clients.size();
+	}
 }

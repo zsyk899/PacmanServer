@@ -162,6 +162,9 @@ public class MainGame extends Ucigame{
 		menu.showButton(clients);
 	}
 	
+	public void removeClient(){
+		menu.showButton(connectionServer.getClients());
+	}
 	
 	
 	/**
