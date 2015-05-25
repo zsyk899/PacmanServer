@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -20,13 +21,13 @@ public class GameState {
 	private static GameState gameInstance;
 	private int lives;
 	private int scores;
-	private ArrayList<ControllableObject> players;
-	private Pacman pacman;
+	private HashMap<String, ControllableObject> players;
+	//private Pacman pacman;
 	private MainGame game;
 	
 	public GameState(MainGame game){
 		this.game = game;
-		this.players = new ArrayList<ControllableObject>();
+		this.players = new HashMap<String, ControllableObject>();
 	}
 	/**
 	 * A static interface that other classes can use to get the global instance of GameState
@@ -53,20 +54,24 @@ public class GameState {
 	
 	public void setupGame(){
 		for(ClientConfig config: ClientMap.getClients()){
-			pacman = new Pacman(config.getId(), 200, 200);
+			Pacman pacman = new Pacman(config.getId(), 200, 200);
 			System.out.println("client added with id: " + config.getId());
-			players.add(pacman);
+			players.put(config.getAddress().getHostAddress(), pacman);
 		}		
 	}
 
 	/**
 	 * 
-	 * Gets the instance of PacMan currently within the game world.
+	 * Gets the instance of player whose machine uses given IP address.
 	 * 
-	 * @return the PacMan instance inside the game world.
+	 * @return the ControllableObject instance inside the game world.
 	 */
-	public Pacman getPacMan() {
-		return this.pacman;
+	public ControllableObject getPlayer(String address) {
+		return players.get(address);
+	}
+	
+	public HashMap<String, ControllableObject> getPacmen(){
+		return players;
 	}
 
 	
@@ -91,7 +96,7 @@ public class GameState {
 	public String snapshotGameState(){
 		JSONObject state = new JSONObject();
 		JSONArray playerState = new JSONArray();
-		for(ControllableObject player : players){
+		for(ControllableObject player : players.values()){
 			JSONObject playerInfo = new JSONObject();
 			playerInfo.put("id", player.getId());
 			playerInfo.put("x", player.getX());

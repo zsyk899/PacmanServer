@@ -1,4 +1,7 @@
 package controller;
+import java.util.ArrayList;
+
+import model.ControllableObject;
 import game.Direction;
 import game.GameState;
 import game.MainGame;
@@ -100,8 +103,15 @@ public class GameController {
 	 *            The direction in which PacMan will now move.
 	 * 
 	 */
-	public void setPacManDirection(Direction d) {
-		state.getPacMan().move(d);
+	public void setPacManDirection(String address, Direction d) {
+		state.getPlayer(address).move(d);
+	}
+	
+	
+	public void setPacmenDirection(Direction d) {
+		for(ControllableObject player : state.getPacmen().values()){
+			player.move(d);
+		}
 	}
 	
 	public MainGame getGame(){

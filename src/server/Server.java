@@ -23,10 +23,13 @@ import ucigame.Sprite;
 import ucigame.Ucigame;
 import utilies.ClientConfig;
 import utilies.ClientMap;
+import utilies.MessageQueue;
+import utilies.PacketMessage;
 
 public class Server{
 		
 	DatagramSocket serverSocket;
+	MainGame game;
 	
 	/**
 	 * Construct a client instance
@@ -34,9 +37,9 @@ public class Server{
 	 * @param ads	IP address
 	 * @param p		IP port
 	 */
-	public Server(int serverPort){
+	public Server(int serverPort, MainGame game){
 		try {
-			
+			this.game = game;
 			serverSocket = new DatagramSocket(serverPort);
 			System.out.println("UDP server port: " + serverSocket.getLocalPort() + " address: " + serverSocket.getLocalAddress());
 			
@@ -44,18 +47,19 @@ public class Server{
 				
 				public void run(){
 					while(true){
-						DatagramPacket messagePack = receiveData();
+						PacketMessage message = receiveData();
 						
-						//System.out.println(ClientMap.getAvailableId());
-						System.out.println(messagePack.getAddress());
-						System.out.println(messagePack.getPort());
-						//ClientMap.logClient(ClientMap.getAvailableId(), messagePack.getAddress(), messagePack.getPort());
-						System.out.println(new String(messagePack.getData()));
+						MessageQueue.pushMessage(message);
+						//System.out.println(ClientMap.getAvailableId());						
 					}
 				}				
 			};
-
+			read.setDaemon(true);
 			read.start();
+			
+			EventHandler eventHandler = new EventHandler(game);
+			eventHandler.setDaemon(true);
+			eventHandler.start();
 			
 			System.out.println("SERVER START");
 		} catch (SocketException se){
@@ -77,19 +81,24 @@ public class Server{
     
     public void sendDataToAll(byte[] buf){
     	for(ClientConfig client: ClientMap.getClients()){
-    		System.out.println("Sent data to client " + client.getId() + " with address " + client.getAddress() + " and port " + client.getPort());
+    		//System.out.println("Sent data to client " + client.getId() + " with address " + client.getAddress() + " and port " + client.getPort());
     		sendData(buf, client.getAddress(), client.getPort());
     	}
     }
     
-    public DatagramPacket receiveData(){
-    	DatagramPacket result = null;
+    public PacketMessage receiveData(){
+    	PacketMessage result = null;
 		try{
 			byte[] receiveData = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(receiveData, receiveData.length);
 			serverSocket.receive(packet);
 			//serverSocket.close();
-			result = packet;
+			System.out.println(packet.getAddress());
+			System.out.println(packet.getPort());
+			//ClientMap.logClient(ClientMap.getAvailableId(), messagePack.getAddress(), messagePack.getPort());
+			
+			result = new PacketMessage(packet.getAddress(), packet.getPort(), new String(packet.getData()).trim());
+			
 		}catch(Exception e){
 			// TODO: error? the server is not responding
 			e.printStackTrace();

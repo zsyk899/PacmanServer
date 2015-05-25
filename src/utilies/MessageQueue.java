@@ -7,13 +7,13 @@ public class MessageQueue {
 	/**
 	 * A Thread-safe queue that shared by multiple threads
 	 */
-	public static LinkedBlockingQueue<String> messages = new LinkedBlockingQueue<String>();
+	public static LinkedBlockingQueue<PacketMessage> messages = new LinkedBlockingQueue<PacketMessage>();
 	
 	/**
 	 * Add given message to the queue
 	 * @param message	The message to be added to the queue
 	 */
-	public static void pushMessage(String message){
+	public static void pushMessage(PacketMessage message){
 		try {
 			messages.put(message);
 		} catch (InterruptedException e) {
@@ -27,9 +27,9 @@ public class MessageQueue {
 	 * 
 	 * @return	the oldest message
 	 */
-	public static String popMessage(){
+	public static PacketMessage popMessage(){
 		
-		String message = null;
+		PacketMessage message = null;
 		try {
 			message = messages.take();
 		} catch (InterruptedException e) {

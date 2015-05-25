@@ -84,7 +84,7 @@ public class MainGame extends Ucigame{
 		menu.hideAllClientButton();
 		//server = new Server("localhost", port);
 		connectionServer = new TCPServer(TCPServerPort, this);
-		server = new Server(UDPServerPort);
+		server = new Server(UDPServerPort, this);
 
 		showScene(SceneMode.SERVERMENU);
     }
@@ -116,19 +116,23 @@ public class MainGame extends Ucigame{
         // Arrow keys and WASD keys move the paddle
     	if (keyboard.isDown(keyboard.UP, keyboard.W)){
     		
-			control.setPacManDirection(Direction.UP);
-			
+//			control.setPacManDirection(Direction.UP);
+			control.setPacmenDirection(Direction.UP);
+
 		}else if (keyboard.isDown(keyboard.DOWN, keyboard.S)){
 			
-			control.setPacManDirection(Direction.DOWN);
+//			control.setPacManDirection(Direction.DOWN);
+			control.setPacmenDirection(Direction.DOWN);
 			
 		}else if (keyboard.isDown(keyboard.LEFT, keyboard.A)){
 			
-			control.setPacManDirection(Direction.LEFT);
+//			control.setPacManDirection(Direction.LEFT);
+			control.setPacmenDirection(Direction.LEFT);
 			
 		}else if (keyboard.isDown(keyboard.RIGHT, keyboard.D)){
 			
-			control.setPacManDirection(Direction.RIGHT);
+//			control.setPacManDirection(Direction.RIGHT);
+			control.setPacmenDirection(Direction.RIGHT);
 			
 		}
     }
@@ -178,8 +182,12 @@ public class MainGame extends Ucigame{
 	}
 	
 	public void updateClientState(String state){
-		System.out.println("sent game state: " + state);
+		//System.out.println("sent game state: " + state);
 		server.sendDataToAll(state.getBytes());
+	}
+	
+	public void handleUserInput(String address, Direction d){
+		control.setPacManDirection(address, d);
 	}
 	
 	/**
