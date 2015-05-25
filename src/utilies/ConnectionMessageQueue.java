@@ -39,4 +39,9 @@ public class ConnectionMessageQueue {
 		
 		return message;
 	}
+
+	public static boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return messages.isEmpty();
+	}
 }

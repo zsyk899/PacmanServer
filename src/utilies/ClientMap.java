@@ -55,5 +55,9 @@ public class ClientMap {
 		}
 	}
 	
+	public static int getSize(){
+		return clients.size();
+	}
+	
 	
 }

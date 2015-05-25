@@ -6,6 +6,7 @@ import server.Server;
 import server.TCPServer;
 import ucigame.Sprite;
 import ucigame.Ucigame;
+import utilies.ClientMap;
 
 
 /**
@@ -135,9 +136,14 @@ public class MainGame extends Ucigame{
 	 */
 	public void onClickStart() {
 		if (isShowingScene(SceneMode.SERVERMENU)) {
-			System.out.println("Single player game");
 			//startPacManServer();
-			showGameScreen();
+			if(!ClientMap.isEmpty()){
+				System.out.println("Game Start!");
+				connectionServer.startGame();
+				showGameScreen();
+			}else{
+				System.out.println("cannot start as no client connected.");
+			}
 		}
 	}
     
@@ -163,7 +169,8 @@ public class MainGame extends Ucigame{
 	}
 	
 	public void removeClient(){
-		menu.showButton(connectionServer.getClients());
+		menu.showButton(connectionServer.getSize());
+		System.out.println("Show "+ connectionServer.getSize() + "clients");
 	}
 	
 	
