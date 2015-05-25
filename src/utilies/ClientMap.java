@@ -7,10 +7,12 @@ import java.util.Iterator;
 public class ClientMap {
 
 	private static ArrayList<ClientConfig> clients = new ArrayList<ClientConfig>();
+	private static int counter = 0;
 		
-	public static int logClient(int id, InetAddress address, int port){
-		ClientConfig client = new ClientConfig(id, address, port);
+	public static int logClient(InetAddress address, int port){
+		ClientConfig client = new ClientConfig(counter, address, port);
 		clients.add(client);
+		counter++;
 		return client.getId();
 	}
 	
@@ -20,10 +22,6 @@ public class ClientMap {
 	
 	public static boolean isEmpty(){
 		return clients.isEmpty();
-	}
-	
-	public static int getAvailableId(){
-		return clients.size() + 1;
 	}
 	
 	public static void removeClient(InetAddress address, int port){

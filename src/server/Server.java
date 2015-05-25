@@ -34,10 +34,11 @@ public class Server{
 	 * @param ads	IP address
 	 * @param p		IP port
 	 */
-	public Server(String ads, int serverPort){
+	public Server(int serverPort){
 		try {
 			
 			serverSocket = new DatagramSocket(serverPort);
+			System.out.println("UDP server port: " + serverSocket.getLocalPort());
 			
 			Thread read = new Thread(){
 				
@@ -76,6 +77,7 @@ public class Server{
     
     public void sendDataToAll(byte[] buf){
     	for(ClientConfig client: ClientMap.getClients()){
+    		System.out.println("Sent data to client " + client.getId() + " with address " + client.getAddress() + " and port " + client.getPort());
     		sendData(buf, client.getAddress(), client.getPort());
     	}
     }

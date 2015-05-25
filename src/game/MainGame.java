@@ -26,7 +26,9 @@ public class MainGame extends Ucigame{
     private SceneMode currentScene;
     private GameController control;
     
-    private final int port = 8899;
+    private final int TCPServerPort = 8899;
+    private final int UDPServerPort = 18899;
+    public final static int clientPort = 52443;
     private Server server;
     private TCPServer connectionServer;
     
@@ -81,7 +83,7 @@ public class MainGame extends Ucigame{
 		menu = new ServerMenu(this);
 		menu.hideAllClientButton();
 		//server = new Server("localhost", port);
-		connectionServer = new TCPServer(port, this);
+		connectionServer = new TCPServer(TCPServerPort, this);
 		showScene(SceneMode.SERVERMENU);
     }
     
@@ -141,6 +143,7 @@ public class MainGame extends Ucigame{
 				System.out.println("Game Start!");
 				connectionServer.startGame();
 				showGameScreen();
+				server = new Server(UDPServerPort);
 			}else{
 				System.out.println("cannot start as no client connected.");
 			}
@@ -173,6 +176,9 @@ public class MainGame extends Ucigame{
 		System.out.println("Show "+ connectionServer.getSize() + "clients");
 	}
 	
+	public void updateClientState(String state){
+		server.sendDataToAll(state.getBytes());
+	}
 	
 	/**
 	 * Displays the specified scene onto the window, while also storing the

@@ -17,8 +17,8 @@ public class Pacman extends ControllableObject{
 	private double angle; // 0,90,180,270
 	
 
-	public Pacman(int x, int y) {
-		super(pacImagePath, new int[] {0, 0, 22, 0, 44, 0, 66, 0}, PACWIDTH, PACHEIGHT, PACFRAMERATE, x, y);
+	public Pacman(int id, int x, int y) {
+		super(pacImagePath, new int[] {0, 0, 22, 0, 44, 0, 66, 0}, PACWIDTH, PACHEIGHT, PACFRAMERATE, x, y, id);
 		
 		super.speed = PACSPEED;
 		angle = 0;

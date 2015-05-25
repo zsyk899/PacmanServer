@@ -17,9 +17,9 @@ public class GameController {
 	private boolean hasNextMove;
 	
 	private GameController(MainGame mainGame) {
-		GameState.setInstance(new GameState());
-		state = GameState.getInstance();
 		this.game = mainGame;
+		GameState.setInstance(new GameState(mainGame));
+		state = GameState.getInstance();
 	}
 	
 	/**

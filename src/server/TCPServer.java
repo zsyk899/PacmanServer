@@ -28,6 +28,8 @@ public class TCPServer {
     public TCPServer(int port, MainGame game) {
         try {
 			serverSocket = new ServerSocket(port);
+			System.out.println("TCP server port: " + serverSocket.getLocalPort());
+
 			clients = new ArrayList<TCPServerConnection>();
 			this.game = game;
 	    	parser = new JSONParser();
@@ -48,6 +50,9 @@ public class TCPServer {
                         showConnectedClients(clients.size());
                         if(newConnection != null)
                         	System.out.println("client added, with address:" + s.getInetAddress() + "there are " + clients + " connected.");
+                		for(ClientConfig config: ClientMap.getClients()){
+                			System.out.println("address: " + config.getAddress() + " port: " + config.getPort());
+                		}
                         //System.out.println(clients.size());
                     }
                     catch(IOException e){ e.printStackTrace(); }
@@ -106,6 +111,7 @@ public class TCPServer {
 
 	private void diconnectClient(String address) {
 		// TODO Auto-generated method stub
+
 		ClientMap.removeClient(address);
 		TCPServerConnection target = null;
 		for(TCPServerConnection connection: clients){

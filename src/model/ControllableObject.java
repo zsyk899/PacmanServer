@@ -8,11 +8,13 @@ public abstract class ControllableObject extends Sprite{
 	protected double speed;
 	protected GameController control;
 	protected Direction currentDirection;
+	protected int id;
 	
-	public ControllableObject(String imgPath, int[] frames, int width, int height, int framerate, int x, int y) {
+	public ControllableObject(String imgPath, int[] frames, int width, int height, int framerate, int x, int y, int id) {
 		super(width, height);
 		control = GameController.getInstance();	
-
+		this.id = id;
+		this.currentDirection = Direction.LEFT;
 		position(x, y);
 		addFrames(control.getGame().getImage(imgPath, 255,255,255), frames);
 		framerate(framerate);
@@ -65,4 +67,20 @@ public abstract class ControllableObject extends Sprite{
 	 * @return true if the move is allowed.
 	 */
 	public abstract boolean canMove(Direction d);
+	
+	public double getX(){
+		return super.x();
+	}
+	
+	public double getY(){
+		return super.y();
+	}
+	
+	public int getId(){
+		return this.id;
+	}
+	
+	public String getDirection(){
+		return this.currentDirection.toString();
+	}
 }

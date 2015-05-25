@@ -1,5 +1,7 @@
 package server;
 
+import game.MainGame;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,9 +30,9 @@ public class TCPServerConnection {
     TCPServerConnection(Socket socket){
         this.socket = socket;
         this.address = socket.getInetAddress();
-        this.port = socket.getPort();
+        //this.port = socket.getPort();
         
-        this.id = ClientMap.logClient(ClientMap.getAvailableId(), address, port);
+        this.id = ClientMap.logClient(address, MainGame.clientPort);
         this.isRunning = true;
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));

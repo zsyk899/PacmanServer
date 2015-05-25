@@ -2,6 +2,13 @@ package game;
 
 import java.util.ArrayList;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import utilies.ClientConfig;
+import utilies.ClientMap;
+import utilies.StatusCode;
+import model.ControllableObject;
 import model.Pacman;
 
 /**
@@ -13,8 +20,14 @@ public class GameState {
 	private static GameState gameInstance;
 	private int lives;
 	private int scores;
+	private ArrayList<ControllableObject> players;
 	private Pacman pacman;
+	private MainGame game;
 	
+	public GameState(MainGame game){
+		this.game = game;
+		this.players = new ArrayList<ControllableObject>();
+	}
 	/**
 	 * A static interface that other classes can use to get the global instance of GameState
 	 * @return an instance of GameState
@@ -39,9 +52,10 @@ public class GameState {
 	}
 	
 	public void setupGame(){
-		pacman = new Pacman(200, 200);
-		
-		
+		for(ClientConfig config: ClientMap.getClients()){
+			pacman = new Pacman(200, 200, config.getId());
+			players.add(pacman);
+		}		
 	}
 
 	/**
@@ -59,7 +73,34 @@ public class GameState {
 	 * Draws all objects in the game
 	 */
 	public void draw() {
-		pacman.draw();
+//		for(ControllableObject player : players){
+//			player.draw();
+//		}
+		//draw the game and make snapshot
+		String gamestate = snapshotGameState();
+		game.updateClientState(gamestate);
 	}
 	
+	/**
+	 * Draw each player on screen and make a snapshot of the game state
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public String snapshotGameState(){
+		JSONObject state = new JSONObject();
+		JSONArray playerState = new JSONArray();
+		for(ControllableObject player : players){
+			JSONObject playerInfo = new JSONObject();
+			playerInfo.put("id", player.getId());
+			playerInfo.put("x", player.getX());
+			playerInfo.put("y", player.getY());
+			playerInfo.put("direction", player.getDirection());
+			playerState.add(playerInfo);
+			
+			player.draw();
+		}	
+		state.put("request", new Integer(StatusCode.GAME_STATE));
+		state.put("num", new Integer(players.size()));
+		return state.toJSONString();
+	}
 }
