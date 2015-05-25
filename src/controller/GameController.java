@@ -45,6 +45,7 @@ public class GameController {
 	 */
 	public void startGame() {
 		// TODO Auto-generated method stub
+
 		state.initialize();
 		hasNextMove = false;
 	}

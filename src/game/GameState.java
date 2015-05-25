@@ -53,7 +53,8 @@ public class GameState {
 	
 	public void setupGame(){
 		for(ClientConfig config: ClientMap.getClients()){
-			pacman = new Pacman(200, 200, config.getId());
+			pacman = new Pacman(config.getId(), 200, 200);
+			System.out.println("client added with id: " + config.getId());
 			players.add(pacman);
 		}		
 	}
