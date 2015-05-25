@@ -5,5 +5,8 @@
 	<classpathentry kind="lib" path="lib/jlayer-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/swing-worker-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/args4j-2.0.21.jar"/>
+	<classpathentry kind="lib" path="lib/args4j-2.0.21-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/ucigame.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
