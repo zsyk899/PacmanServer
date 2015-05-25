@@ -10,9 +10,11 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import utilies.ClientConfig;
 import utilies.ClientMap;
 import utilies.ConnectionMessageQueue;
 import utilies.StatusCode;
@@ -95,7 +97,14 @@ public class TCPServerConnection {
 	public void startGame(){
     	JSONObject object = new JSONObject();
     	object.put("request", StatusCode.START_GAME);
-    	object.put("players", ClientMap.getSize());
+    	JSONArray players = new JSONArray();
+    	for(ClientConfig client: ClientMap.getClients()){
+        	JSONObject player = new JSONObject();
+        	player.put("id", client.getId());
+        	players.add(player);
+    	}
+    	object.put("players", players);
+    	object.put("num", ClientMap.getSize());
     	this.write(object.toJSONString());
     }
         

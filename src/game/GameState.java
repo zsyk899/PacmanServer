@@ -78,7 +78,8 @@ public class GameState {
 //		}
 		//draw the game and make snapshot
 		String gamestate = snapshotGameState();
-		game.updateClientState(gamestate);
+		if(game != null)
+			game.updateClientState(gamestate);
 	}
 	
 	/**
@@ -99,6 +100,7 @@ public class GameState {
 			
 			player.draw();
 		}	
+		state.put("state", playerState);
 		state.put("request", new Integer(StatusCode.GAME_STATE));
 		state.put("num", new Integer(players.size()));
 		return state.toJSONString();

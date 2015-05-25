@@ -28,7 +28,7 @@ public class TCPServer {
     public TCPServer(int port, MainGame game) {
         try {
 			serverSocket = new ServerSocket(port);
-			System.out.println("TCP server port: " + serverSocket.getLocalPort());
+			System.out.println("TCP server port: " + serverSocket.getLocalPort() + " address: " + serverSocket.getInetAddress());
 
 			clients = new ArrayList<TCPServerConnection>();
 			this.game = game;

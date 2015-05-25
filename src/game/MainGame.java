@@ -69,7 +69,7 @@ public class MainGame extends Ucigame{
 
     private void initializeWindow() {
 		// set frame rate
-		this.framerate(60);
+		this.framerate(20);
 		//instantiate a global game controller
 		control = GameController.setInstance(this);
 		// set window size
@@ -84,6 +84,8 @@ public class MainGame extends Ucigame{
 		menu.hideAllClientButton();
 		//server = new Server("localhost", port);
 		connectionServer = new TCPServer(TCPServerPort, this);
+		server = new Server(UDPServerPort);
+
 		showScene(SceneMode.SERVERMENU);
     }
     
@@ -143,7 +145,6 @@ public class MainGame extends Ucigame{
 				System.out.println("Game Start!");
 				connectionServer.startGame();
 				showGameScreen();
-				server = new Server(UDPServerPort);
 			}else{
 				System.out.println("cannot start as no client connected.");
 			}
@@ -177,6 +178,7 @@ public class MainGame extends Ucigame{
 	}
 	
 	public void updateClientState(String state){
+		System.out.println("sent game state: " + state);
 		server.sendDataToAll(state.getBytes());
 	}
 	

@@ -38,7 +38,7 @@ public class Server{
 		try {
 			
 			serverSocket = new DatagramSocket(serverPort);
-			System.out.println("UDP server port: " + serverSocket.getLocalPort());
+			System.out.println("UDP server port: " + serverSocket.getLocalPort() + " address: " + serverSocket.getLocalAddress());
 			
 			Thread read = new Thread(){
 				
