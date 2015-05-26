@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import controller.WallController;
 import utilies.ClientConfig;
 import utilies.ClientMap;
 import utilies.StatusCode;
@@ -24,6 +25,7 @@ public class GameState {
 	private HashMap<String, ControllableObject> players;
 	//private Pacman pacman;
 	private MainGame game;
+	private WallController walls;
 	
 	public GameState(MainGame game){
 		this.game = game;
@@ -53,6 +55,7 @@ public class GameState {
 	}
 	
 	public void setupGame(){
+		walls = new WallController();
 		for(ClientConfig config: ClientMap.getClients()){
 			Pacman pacman = new Pacman(config.getId(), 200, 200);
 			System.out.println("client added with id: " + config.getId());
@@ -83,6 +86,7 @@ public class GameState {
 //			player.draw();
 //		}
 		//draw the game and make snapshot
+		walls.drawWalls();
 		String gamestate = snapshotGameState();
 		if(game != null)
 			game.updateClientState(gamestate);

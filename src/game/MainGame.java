@@ -1,6 +1,8 @@
 package game;
 import menu.MainMenu;
 import menu.ServerMenu;
+import msg.Msg;
+import msg.MsgFactory;
 import controller.GameController;
 import server.Server;
 import server.TCPServer;
@@ -25,6 +27,7 @@ public class MainGame extends Ucigame{
     private ServerMenu menu;
     private SceneMode currentScene;
     private GameController control;
+    private MsgFactory msgFactory;
     
     private final int TCPServerPort = 8899;
     private final int UDPServerPort = 18899;
@@ -70,8 +73,10 @@ public class MainGame extends Ucigame{
     private void initializeWindow() {
 		// set frame rate
 		this.framerate(20);
-		//instantiate a global game controller
+		//Instantiate a global game controller
 		control = GameController.setInstance(this);
+		//Instantiate a message factory
+		msgFactory = new MsgFactory();
 		// set window size
 		window.size(windowWidth, windowHeight);
 		// set window title
@@ -183,7 +188,10 @@ public class MainGame extends Ucigame{
 	
 	public void updateClientState(String state){
 		//System.out.println("sent game state: " + state);
-		server.sendDataToAll(state.getBytes());
+		Msg msg = msgFactory.getNewInstance();
+		msg.setInstruction(state);
+		msg.setCounter(1);
+		server.sendDataToAll(msg.toJString().getBytes());
 	}
 	
 	public void handleUserInput(String address, Direction d){

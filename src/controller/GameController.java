@@ -89,6 +89,7 @@ public class GameController {
 
 	private void handleCollisions() {
 		// TODO Auto-generated method stub
+		
 	}
 	
 	/**
