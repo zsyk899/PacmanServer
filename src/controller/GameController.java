@@ -67,14 +67,9 @@ public class GameController {
 	 * moving chracters, etc. need to be checked before rendering them.
 	 */
 	public void nextMove() {
-		if (hasNextMove) {
-			moveActors(); // moves the actors for tick
-			handleCollisions(); // handles the actors colliding
-			checkStageClear(); // handle stage being clear (loading next stage)
-		}
-		else{
-//			state.getPacMan().motion(0, 0); 
-		}
+		movePlayers(); // moves the actors for tick
+		handleCollisions(); // handles the actors colliding
+		checkStageClear(); // handle stage being clear (loading next stage)
 	}
 
 	private void checkStageClear() {
@@ -82,9 +77,10 @@ public class GameController {
 		
 	}
 
-	private void moveActors() {
+	private void movePlayers() {
 		// TODO Auto-generated method stub
-		
+		state.movePlayers();
+//		stopIfCollidesWith(MainGame.TOPEDGE, MainGame.BOTTOMEDGE, MainGame.LEFTEDGE, MainGame.RIGHTEDGE);
 	}
 
 	private void handleCollisions() {
@@ -110,7 +106,7 @@ public class GameController {
 	
 	
 	public void setPacmenDirection(Direction d) {
-		for(ControllableObject player : state.getPacmen().values()){
+		for(ControllableObject player : state.getPlayers().values()){
 			player.move(d);
 		}
 	}

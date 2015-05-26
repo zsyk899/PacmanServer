@@ -2,6 +2,7 @@ package game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -24,7 +25,7 @@ public class GameState {
 	private static GameState gameInstance;
 	private int lives;
 	private int scores;
-	private HashMap<String, ControllableObject> players;
+	private ConcurrentHashMap<String, ControllableObject> players;
 	//private Pacman pacman;
 	private MainGame game;
 	private int counter;
@@ -33,7 +34,7 @@ public class GameState {
 	
 	public GameState(MainGame game){
 		this.game = game;
-		this.players = new HashMap<String, ControllableObject>();
+		this.players = new ConcurrentHashMap<String, ControllableObject>();
 		this.counter = 0;
 		this.msgFactory = new MsgFactory();
 	}
@@ -63,7 +64,7 @@ public class GameState {
 	public void setupGame(){
 		walls = new WallController();
 		for(ClientConfig config: ClientMap.getClients()){
-			Pacman pacman = new Pacman(config.getId(), 200, 200);
+			Pacman pacman = new Pacman(config.getId(), 300, 280);
 			System.out.println("client added with id: " + config.getId());
 			players.put(config.getAddress().getHostAddress(), pacman);
 		}		
@@ -79,11 +80,17 @@ public class GameState {
 		return players.get(address);
 	}
 	
-	public HashMap<String, ControllableObject> getPacmen(){
+	public ConcurrentHashMap<String, ControllableObject> getPlayers(){
 		return players;
 	}
 
-	
+	public void movePlayers(){
+		for(ControllableObject player: players.values()){
+			player.move();
+			player.stopIfCollidesWith(MainGame.TOPEDGE, MainGame.BOTTOMEDGE, MainGame.LEFTEDGE, MainGame.RIGHTEDGE);
+			walls.stopCollisions(player);
+		}
+	}
 	/**
 	 * Draws all objects in the game
 	 */

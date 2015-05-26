@@ -1,4 +1,5 @@
 package game;
+import menu.GameMenu;
 import menu.MainMenu;
 import menu.ServerMenu;
 import msg.Msg;
@@ -32,11 +33,12 @@ public class MainGame extends Ucigame{
     private final int UDPServerPort = 18899;
     public final static int clientPort = 52443;
     private Server server;
+    private GameMenu gamescreen;
     private TCPServer connectionServer;
     
     
-    public static final int windowWidth = 500;
-    public static final int windowHeight = 500;
+    public static final int windowWidth = 600;
+    public static final int windowHeight = 650;
     public static final int windowCentreX = windowWidth/2;
     public static final int windowCentreY = windowHeight/2;
     		
@@ -91,7 +93,8 @@ public class MainGame extends Ucigame{
 		showScene(SceneMode.SERVERMENU);
     }
     
-    private void showGameScreen(){   	
+    private void showGameScreen(){  
+    	gamescreen = new GameMenu(this);
     	control.startGame(); // start the game
 		showScene(SceneMode.GAME);
     }
@@ -106,6 +109,7 @@ public class MainGame extends Ucigame{
 	 */
 	public void drawGame() {
 		canvas.clear();
+		gamescreen.draw();
 		control.nextMove();
 		control.drawState();
 	}
@@ -172,6 +176,7 @@ public class MainGame extends Ucigame{
 	
 	public void onClickClientFour(){}
 	
+	public void onClickTimeBoard(){}
 	
 	
 	public void showConnectedClients(int clients){

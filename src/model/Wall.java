@@ -19,7 +19,7 @@ public class Wall extends Sprite {
 	public Wall(int x, int y, int width, int height) {
 		super(width, height);
 		control = GameController.getInstance();
-		super.addFrame(control.getGame().getImage(imagePath, 255,255,255), 0, 0);
+		super.addFrame(control.getGame().getImage(imagePath, 255,255,255), x, y);
 		this.position(x, y);		
 	}
 	

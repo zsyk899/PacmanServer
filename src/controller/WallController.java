@@ -151,7 +151,8 @@ public class WallController {
 		addWall(18,178,100,203);
 		addWall(185,181,65,22);
 		addWall(350,181,64,22);
-		addWall(220,239,160,10);
+		addWall(220,239,60,10);
+		addWall(320,239,70,10);
 		addWall(220,249,11,75);
 		addWall(370,249,10,59);
 		addWall(154,294,31,87);
