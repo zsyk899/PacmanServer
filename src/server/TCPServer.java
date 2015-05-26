@@ -67,12 +67,12 @@ public class TCPServer {
                 		}
                         //System.out.println(clients.size());
                     }catch(SocketException se){
-                    	se.printStackTrace(); 
+//                    	se.printStackTrace(); 
                     	System.out.println("Socket closed");
                     	break;
                     }
                     catch(IOException e){ 
-                    	e.printStackTrace(); 
+//                    	e.printStackTrace(); 
                     	break;
                     }
                 }

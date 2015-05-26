@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import menu.MainMenu;
 import menu.ServerMenu;
 import controller.GameController;
 import ucigame.Sprite;
@@ -133,7 +132,7 @@ public class Server{
 			
 		}catch(Exception e){
 			// TODO: error? the server is not responding
-			e.printStackTrace();
+//			e.printStackTrace();
 		}		
 		return result;
 	}
