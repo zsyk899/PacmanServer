@@ -13,7 +13,7 @@ public class Pacman extends ControllableObject{
 	private static final int PACWIDTH = 22;
 	private static final int PACHEIGHT = 22;
 	private static final int PACFRAMERATE = 10;
-	private static final int PACSPEED = 10;
+	private static final int PACSPEED = 6;
 	private double angle; // 0,90,180,270
 	
 

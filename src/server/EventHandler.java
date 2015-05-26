@@ -66,8 +66,6 @@ public class EventHandler extends Thread {
 		
 		try {
 			JSONObject msg = (JSONObject) parser.parse(message);
-			System.out.println("received message: " + msg + " " + address);
-			System.out.println(counters.toString());
 			if(msg.containsKey("counter")&&msg.containsKey("instruction")){
 				//counter returned from client
 				int counter = Integer.valueOf(((Long) msg.get("counter")).intValue());
@@ -81,6 +79,10 @@ public class EventHandler extends Thread {
 								incrementCounter(address, counter);
 								game.handleUserInput(address, d);
 						}
+					}else{
+						//display if some messages are discarded
+						System.out.println("This message is discarded: " + msg + " " + address);
+						System.out.println(counters.toString());
 					}
 				}
 			}
