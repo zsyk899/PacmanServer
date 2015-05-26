@@ -1,5 +1,4 @@
 package controller;
-import java.util.ArrayList;
 
 import model.ControllableObject;
 import game.Direction;
@@ -7,9 +6,7 @@ import game.GameState;
 import game.MainGame;
 
 /**
- * This class controls all central functions of the game
- * 
- * @author Siyuan Zhang
+ * This class controls all central functions of the game.
  *
  */
 public class GameController {
@@ -17,7 +14,6 @@ public class GameController {
 	private static GameController controller;
 	private MainGame game;
 	private GameState state;
-	private boolean hasNextMove;
 	
 	private GameController(MainGame mainGame) {
 		this.game = mainGame;
@@ -48,9 +44,7 @@ public class GameController {
 	 */
 	public void startGame() {
 		// TODO Auto-generated method stub
-
 		state.initialize();
-		hasNextMove = false;
 	}
 	
 	/**
@@ -68,49 +62,45 @@ public class GameController {
 	 */
 	public void nextMove() {
 		movePlayers(); // moves the actors for tick
-		handleCollisions(); // handles the actors colliding
-		checkStageClear(); // handle stage being clear (loading next stage)
-	}
-
-	private void checkStageClear() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void movePlayers() {
-		// TODO Auto-generated method stub
-		state.movePlayers();
-//		stopIfCollidesWith(MainGame.TOPEDGE, MainGame.BOTTOMEDGE, MainGame.LEFTEDGE, MainGame.RIGHTEDGE);
-	}
-
-	private void handleCollisions() {
-		// TODO Auto-generated method stub
-		
+//		handleCollisions(); // handles the actors colliding
 	}
 	
 	/**
-	 * 
-	 * Commands PacMan to move in the specified direction if he is able to do so
-	 * without colliding into a wall. Note that if PacMan is commanded to move
-	 * into a direction he cannot go in then the direction will be unchanged.
-	 * This function is invoked primarily based on the keyboard input on the
-	 * game by the user.
-	 * 
-	 * @param d
-	 *            The direction in which PacMan will now move.
-	 * 
+	 * Move players
+	 */
+	private void movePlayers() {
+		// TODO Auto-generated method stub
+		state.movePlayers();
+	}
+	
+//	/** 
+//	 * This should be implemented if collision between pacmen is allowed
+//	 */
+//	private void handleCollisions() {
+//		// TODO Auto-generated method stub
+//	}
+	
+	/**
+	 * To move the player with given IP address to move to the given direction
+	 * @param d		The direction that the pacman will move to.
 	 */
 	public void setPacManDirection(String address, Direction d) {
 		state.getPlayer(address).move(d);
 	}
 	
-	
+	/**
+	 * This method is used only when the server want to control all pacman
+	 * @param d		the direction that all pacmen will move to
+	 */
 	public void setPacmenDirection(Direction d) {
 		for(ControllableObject player : state.getPlayers().values()){
 			player.move(d);
 		}
 	}
 	
+	/**
+	 * @return the game instance
+	 */
 	public MainGame getGame(){
 		return game;
 	}

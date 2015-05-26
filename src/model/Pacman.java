@@ -5,7 +5,9 @@ import controller.GameController;
 import ucigame.Image;
 import ucigame.Sprite;
 
-
+/**
+ *	This model defines all behaviors of a pacman
+ */
 public class Pacman extends ControllableObject{
 
 	
@@ -29,11 +31,12 @@ public class Pacman extends ControllableObject{
 	 */
 	public void draw() {
 		super.rotate(angle);
-//		super.move();
-//		stopIfCollidesWith(MainGame.TOPEDGE, MainGame.BOTTOMEDGE, MainGame.LEFTEDGE, MainGame.RIGHTEDGE);
 		super.draw();
 	}
 
+	/**
+	 * Change the image according to the direction it is moving on
+	 */
 	@Override
 	public void spriteForDirection(Direction d) {
 		// TODO Auto-generated method stub
@@ -47,11 +50,5 @@ public class Pacman extends ControllableObject{
 			angle = 0;
 		}
 		
-	}
-	
-	@Override
-	public boolean canMove(Direction d) {
-		// TODO Auto-generated method stub
-		return true;
 	}
 }

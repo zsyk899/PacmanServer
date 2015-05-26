@@ -4,11 +4,15 @@ import game.MainGame;
 import ucigame.Image;
 import ucigame.Sprite;
 
+/**
+ * Defines the layout of the main menu screen
+ *
+ */
 public class GameMenu {
 
 	private Sprite timeboard;	
-
 	MainGame game;
+	
 	/**
 	 * 
 	 * Constructor for MainMenu, creates all the buttons in the menu 
@@ -25,10 +29,8 @@ public class GameMenu {
 	}
 	
 	/**
-	 * 
-	 * Draws all the buttons in the MainMenu. Each button corresponds to a OnClick state located 
-	 * in PacManGame.java.
-	 * 
+	 * Draws all the buttons in the GameMenu. Each button corresponds to a OnClick state located 
+	 * in MainGame.java.
 	 */
 	public void draw(){
 		timeboard.draw();

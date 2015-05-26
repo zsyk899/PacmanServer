@@ -6,6 +6,9 @@ import game.MainGame;
 import ucigame.Image;
 import ucigame.Sprite;
 
+/**
+ * Define the layout of the server main menu
+ */
 public class ServerMenu {
 	private Sprite startButton;
 	private Sprite quitButton;
@@ -16,12 +19,10 @@ public class ServerMenu {
 	private Sprite clientFourButton;
 	
 	MainGame game;
-	/**
-	 * 
-	 * Constructor for MainMenu, creates all the buttons in the menu 
-	 * 
-	 */
 	
+	/**
+	 * Constructor for MainMenu, creates all the buttons in the menu 
+	 */	
 	public ServerMenu(MainGame game) {
 		this.game = game;
 
@@ -65,7 +66,7 @@ public class ServerMenu {
 	/**
 	 * 
 	 * Draws all the buttons in the MainMenu. Each button corresponds to a OnClick state located 
-	 * in PacManGame.java.
+	 * in MainGame.java.
 	 * 
 	 */
 	public void draw(){
@@ -78,6 +79,10 @@ public class ServerMenu {
 		quitButton.draw();
 	}
 	
+	/**
+	 * Hide the button for corresponding client on the board
+	 * @param client
+	 */
 	public void hideButton(int client){
 		switch(client){
 			case 1:
@@ -95,6 +100,9 @@ public class ServerMenu {
 		}
 	}
 	
+	/**
+	 * Hide all buttons on the board
+	 */
 	public void hideAllClientButton(){
 		clientOneButton.hide();
 
@@ -105,6 +113,10 @@ public class ServerMenu {
 		clientFourButton.hide();
 	}
 	
+	/**
+	 * Show given number of clients on the board
+	 * @param clients
+	 */
 	public void showButton(int clients){
 		switch(clients){
 			case 0:
@@ -140,6 +152,9 @@ public class ServerMenu {
 		}
 	}
 	
+	/**
+	 * Show all buttons on the board
+	 */
 	public void showAllClientButton(){
 		clientOneButton.show();
 

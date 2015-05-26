@@ -1,7 +1,5 @@
 package game;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.simple.JSONArray;
@@ -18,15 +16,11 @@ import msg.MsgFactory;
 
 /**
  * This class controls all objects in the game
- * @author Siyuan Zhang
  *
  */
 public class GameState {
 	private static GameState gameInstance;
-	private int lives;
-	private int scores;
 	private ConcurrentHashMap<String, ControllableObject> players;
-	//private Pacman pacman;
 	private MainGame game;
 	private int counter;
     private MsgFactory msgFactory;
@@ -38,6 +32,7 @@ public class GameState {
 		this.counter = 0;
 		this.msgFactory = new MsgFactory();
 	}
+	
 	/**
 	 * A static interface that other classes can use to get the global instance of GameState
 	 * @return an instance of GameState
@@ -55,12 +50,16 @@ public class GameState {
 		gameInstance = state;
 	}
 	
+	/**
+	 * Initialize the game
+	 */
 	public void initialize(){
-		this.lives = 0;
-		this.scores = 0;
 		setupGame();
 	}
 	
+	/**
+	 * Create all objects
+	 */
 	public void setupGame(){
 		walls = new WallController();
 		for(ClientConfig config: ClientMap.getClients()){
@@ -72,18 +71,22 @@ public class GameState {
 
 	/**
 	 * 
-	 * Gets the instance of player whose machine uses given IP address.
-	 * 
-	 * @return the ControllableObject instance inside the game world.
+	 * @return the player with given IP address
 	 */
 	public ControllableObject getPlayer(String address) {
 		return players.get(address);
 	}
 	
+	/**
+	 * @return all players
+	 */
 	public ConcurrentHashMap<String, ControllableObject> getPlayers(){
 		return players;
 	}
 
+	/**
+	 * Move the player and check if they collide with walls
+	 */
 	public void movePlayers(){
 		for(ControllableObject player: players.values()){
 			player.move();
@@ -91,13 +94,11 @@ public class GameState {
 			walls.stopCollisions(player);
 		}
 	}
+	
 	/**
 	 * Draws all objects in the game
 	 */
 	public void draw() {
-//		for(ControllableObject player : players){
-//			player.draw();
-//		}
 		//draw the game and make snapshot
 		walls.drawWalls();
 		String gamestate = snapshotGameState();
@@ -133,5 +134,27 @@ public class GameState {
 		msg.setCounter(counter);
 		
 		return msg.toJString();
+	}
+	
+	/**
+	 * @return a stop message to be sent to the client
+	 */
+	@SuppressWarnings("unchecked")
+	public String getStopMessage(){
+		JSONObject message = new JSONObject();
+		message.put("request", StatusCode.GAME_OVER);
+		
+		Msg msg = msgFactory.getNewInstance();
+		msg.setInstruction(message.toJSONString());
+		msg.setCounter(counter);
+		
+		return msg.toJString();
+	}
+	
+	/**
+	 * @return counter
+	 */
+	public int getCounter(){
+		return counter;
 	}
 }

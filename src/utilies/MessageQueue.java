@@ -2,6 +2,11 @@ package utilies;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * An wrapper class for a FIFO blocking queue. 
+ * It provides some static methods for accessing the queue.
+ * It is used by TCP server to store the connection messages that the client sent.
+ */
 public class MessageQueue {
 	
 	/**

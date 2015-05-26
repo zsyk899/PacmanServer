@@ -17,8 +17,6 @@ import utilies.StatusCode;
 
 /**
  * This class handles all messages from clients
- * @author Siyuan Zhang
- *
  */
 public class EventHandler extends Thread {
 
@@ -41,13 +39,15 @@ public class EventHandler extends Thread {
 			PacketMessage message = MessageQueue.popMessage();
 			String data = message.getData();
 			String address = message.getAddress().getHostAddress();
-//			int port = message.getPort();	
 			
 			parseMessage(data, address);
 			
 		}
 	}
 
+	/**
+	 * Initialize counters for all players
+	 */
 	public void createCounters(){
 		System.out.println("clients: " + ClientMap.getSize());
 
@@ -56,12 +56,22 @@ public class EventHandler extends Thread {
 		}
 	}
 	
-	private void incrementCounter(String address, int counter){
+	/**
+	 * Update the counter value
+	 * @param address	the counter of the player with given address will be updated
+	 * @param counter	the new value of the counter
+	 */
+	private void updateCounter(String address, int counter){
 		if(counters.containsKey(address)){
 			counters.put(address, counter);
 		}
 	}
 	
+	/**
+	 * Parse the messages from the clients and handle them according to the corresponding counter values
+	 * @param message
+	 * @param address
+	 */
 	private void parseMessage(String message, String address) {
 		
 		try {
@@ -69,21 +79,25 @@ public class EventHandler extends Thread {
 			if(msg.containsKey("counter")&&msg.containsKey("instruction")){
 				//counter returned from client
 				int counter = Integer.valueOf(((Long) msg.get("counter")).intValue());
+				
+				/*
+				 * If the counter value indicate that the received message is the latest one that perform the action,
+				 * otherwise discard it
+				 */
 				if(counter > counters.get(address)){
 					JSONObject data = (JSONObject) parser.parse((String) msg.get("instruction"));
 					if(data.containsKey("request")){
 						int code = Integer.valueOf(((Long) data.get("request")).intValue());
 						if(code == StatusCode.USER_INPUT && data.containsKey("direction")){
 							Direction d = Direction.valueOf((String) data.get("direction"));
-								System.out.println(counter + " updated");
-								incrementCounter(address, counter);
+								updateCounter(address, counter);
 								game.handleUserInput(address, d);
 						}
-					}else{
-						//display if some messages are discarded
-						System.out.println("This message is discarded: " + msg + " " + address);
-						System.out.println(counters.toString());
 					}
+				}else{
+					//display if some messages are discarded
+					System.out.println("This message is discarded: " + msg + " " + address);
+					System.out.println(counters.toString());
 				}
 			}
 			

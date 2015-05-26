@@ -4,6 +4,9 @@ import game.Direction;
 import controller.GameController;
 import ucigame.Sprite;
 
+/**
+ *	Define all behaviors of a controllable object
+ */
 public abstract class ControllableObject extends Sprite{
 	protected double speed;
 	protected GameController control;
@@ -21,10 +24,8 @@ public abstract class ControllableObject extends Sprite{
 	}	
 	
 	/**
-	 * Returns true if the object collided with other objects
-	 * 
-	 * @param s		the sprite that the object might collide with
-	 * @return true if this object collided with the specified sprite
+	 * @param s		the object to be checked
+	 * @return true if this object collided with a object
 	 */
 	public boolean collidedWith(Sprite s) {
 		super.checkIfCollidesWith(s);
@@ -33,12 +34,10 @@ public abstract class ControllableObject extends Sprite{
 	
 	/**
 	 * It changes the moving direction of the object.
-	 * 
 	 * @param d		the direction to move
 	 */
 	public void move(Direction d) {
-		if (canMove(d))
-			currentDirection = d;
+		currentDirection = d;
 		spriteForDirection(currentDirection);
 
 		if (currentDirection == Direction.UP) {
@@ -61,25 +60,29 @@ public abstract class ControllableObject extends Sprite{
 	public abstract void spriteForDirection(Direction d);
 	
 	/**
-	 * This method checks if the object can move in given direction
-	 * 
-	 * @param d		the direction to check to for a valid move
-	 * @return true if the move is allowed.
+	 * @return x position of the object
 	 */
-	public abstract boolean canMove(Direction d);
-	
 	public double getX(){
 		return super.x();
 	}
 	
+	/**
+	 * @return y position of the object
+	 */
 	public double getY(){
 		return super.y();
 	}
 	
+	/**
+	 * @return id of the object
+	 */
 	public int getId(){
 		return this.id;
 	}
 	
+	/**
+	 * @return direction the object is moving on
+	 */
 	public String getDirection(){
 		return this.currentDirection.toString();
 	}

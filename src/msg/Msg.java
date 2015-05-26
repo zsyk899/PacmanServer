@@ -5,7 +5,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 /**
- * Created by Benjamin on 15/5/9.
+ * The class attaches the counter to the message
  */
 public class Msg {
 

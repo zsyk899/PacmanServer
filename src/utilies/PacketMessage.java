@@ -2,6 +2,9 @@ package utilies;
 
 import java.net.InetAddress;
 
+/**
+ * A wrapper class that stores the messages a client sent and informtion about this client
+ */
 public class PacketMessage {
 
 	InetAddress address;

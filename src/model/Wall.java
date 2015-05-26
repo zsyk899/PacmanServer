@@ -6,15 +6,20 @@ import ucigame.Image;
 import ucigame.Sprite;
 import controller.GameController;
 
+/**
+ *	This model defines all behaviors of a wall
+ */
 public class Wall extends Sprite {
 	
     protected GameController control;
 	private static final String imagePath = "resources/level.png";
 
 	/**
-	 * Declares a new Stationary Object without declaring a picture
-	 * @param width the width of the object
-	 * @param height the height of the object
+	 * Create a wall
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
 	 */
 	public Wall(int x, int y, int width, int height) {
 		super(width, height);
@@ -24,8 +29,7 @@ public class Wall extends Sprite {
 	}
 	
 	/**
-	 * This is used for collision detection.
-	 * @param c is the object that is being checked this sprite
+	 * @param c is the object to be checked
 	 * @return true if collided into the object and the object is visible
 	 */
 	public boolean collidedWith(ControllableObject c){
@@ -34,7 +38,7 @@ public class Wall extends Sprite {
 	}
 	
 	/**
-	 * Sets the position of the Sprite to the given point
+	 * Sets the position of the wall to the given point
 	 * @param p is used to set the position of the sprite.
 	 */
 	public void position(Point p) {

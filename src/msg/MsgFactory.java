@@ -5,7 +5,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- * Created by Benjamin on 15/5/9.
+ * A factory class to create a msg
  */
 public class MsgFactory {
 

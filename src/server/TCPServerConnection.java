@@ -19,6 +19,10 @@ import utilies.ClientMap;
 import utilies.ConnectionMessageQueue;
 import utilies.StatusCode;
 
+/**
+ * This TCP connection class handles all communication with a TCP client
+ *
+ */
 public class TCPServerConnection {
     BufferedReader in;
     PrintWriter out;
@@ -44,6 +48,7 @@ public class TCPServerConnection {
 			e1.printStackTrace();
 		}
 
+        //create a thread reading messages from the input stream
         read = new Thread(){
             public void run(){
                 while(isRunning){
@@ -80,11 +85,19 @@ public class TCPServerConnection {
     public String toString(){
     	return address + " " + port + " " + id;
     }
+    
+    /**
+     * Write message to the output stream
+     * @param message	message to be sent
+     */
     public void write(String message) {
         out.println(message);
 		out.flush();
     }
 
+    /**
+     * Send connection confirmation to clients
+     */
     @SuppressWarnings("unchecked")
 	public void confirmConnection(){
     	JSONObject object = new JSONObject();
@@ -93,6 +106,9 @@ public class TCPServerConnection {
     	
     }
     
+    /**
+     * Send start game message to clients
+     */
     @SuppressWarnings("unchecked")
 	public void startGame(){
     	JSONObject object = new JSONObject();
@@ -108,6 +124,9 @@ public class TCPServerConnection {
     	this.write(object.toJSONString());
     }
         
+    /**
+     * Close the TCP connection
+     */
     public void close(){
     	try {
     		isRunning = false;

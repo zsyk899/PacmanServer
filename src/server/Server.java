@@ -26,11 +26,17 @@ import utilies.ClientMap;
 import utilies.MessageQueue;
 import utilies.PacketMessage;
 
+/**
+ * 
+ * This UDP server handles communication with all clients
+ *
+ */
 public class Server{
 		
 	DatagramSocket serverSocket;
 	EventHandler eventHandler;
 	MainGame game;
+	boolean isRunning = false;
 	
 	/**
 	 * Construct a client instance
@@ -42,22 +48,36 @@ public class Server{
 		try {
 			this.game = game;
 			serverSocket = new DatagramSocket(serverPort);
+			this.isRunning = true;
 			System.out.println("UDP server port: " + serverSocket.getLocalPort() + " address: " + serverSocket.getLocalAddress());
 			
+			//create a thread for receiving data
 			Thread read = new Thread(){
 				
 				public void run(){
-					while(true){
-						PacketMessage message = receiveData();
-						
-						MessageQueue.pushMessage(message);
-						//System.out.println(ClientMap.getAvailableId());						
+					while(isRunning){
+					    //System.out.println("Received: "+ message) ;
+		            	try{
+			            	PacketMessage message = receiveData();
+		            		MessageQueue.pushMessage(message);			
+					    } catch (SocketException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+					    	System.out.println("Socket closed");
+					    	break;
+
+						} catch(NullPointerException e){
+					    	//e.printStackTrace();
+					    	System.out.println("Nothing received");
+					    	break;
+					    } 		   
 					}
 				}				
 			};
 			read.setDaemon(true);
 			read.start();
 			
+			//create the event handler
 			eventHandler = new EventHandler(game);
 			eventHandler.setDaemon(true);
 			eventHandler.start();
@@ -70,6 +90,12 @@ public class Server{
 		}
 	}
 	
+	/**
+	 * Send data using UDP protocol
+	 * @param buf		the data to be sent
+	 * @param address	the address of the client to be sent to
+	 * @param port		the port of the client to be sent to
+	 */
     public void sendData(byte[] buf, InetAddress address, int port){
 		try{
 			DatagramPacket packet = new DatagramPacket( buf, buf.length, address, port);
@@ -80,6 +106,10 @@ public class Server{
 		}
 	}
     
+    /**
+     * Send data to all clients using UDP protocol
+     * @param buf	the data to be sent
+     */
     public void sendDataToAll(byte[] buf){
     	for(ClientConfig client: ClientMap.getClients()){
     		//System.out.println("Sent data to client " + client.getId() + " with address " + client.getAddress() + " and port " + client.getPort());
@@ -87,17 +117,18 @@ public class Server{
     	}
     }
     
-    public PacketMessage receiveData(){
+    /**
+     * Listen for a port and receive message if there is any.
+     * 
+     * @return	message if successfully received any
+     * @throws SocketException
+     */
+    public PacketMessage receiveData() throws SocketException{
     	PacketMessage result = null;
 		try{
 			byte[] receiveData = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(receiveData, receiveData.length);
-			serverSocket.receive(packet);
-			//serverSocket.close();
-//			System.out.println(packet.getAddress());
-//			System.out.println(packet.getPort());
-			//ClientMap.logClient(ClientMap.getAvailableId(), messagePack.getAddress(), messagePack.getPort());
-			
+			serverSocket.receive(packet);			
 			result = new PacketMessage(packet.getAddress(), packet.getPort(), new String(packet.getData()).trim());
 			
 		}catch(Exception e){
@@ -107,11 +138,18 @@ public class Server{
 		return result;
 	}
     
+    /**
+     * Add counters for all players
+     */
     public void addCountersForClients(){
     	eventHandler.createCounters();
     }
     
+    /**
+     * Close the UDP server
+     */
     public void close(){
+    	isRunning = false;
     	serverSocket.close();
     }
 }

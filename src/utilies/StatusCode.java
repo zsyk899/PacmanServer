@@ -1,5 +1,8 @@
 package utilies;
 
+/**
+ * A utility class that stores all status code used in the game
+ */
 public class StatusCode {
 
 	/**
@@ -9,6 +12,7 @@ public class StatusCode {
 	public static int DISCONNECT = 101;
 	public static int START_GAME = 102;
 	public static int USER_INPUT = 103;
+	public static int GAME_OVER = 104;
 	
 	/**
 	 * Response Code

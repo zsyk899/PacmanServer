@@ -2,6 +2,11 @@ package utilies;
 
 import java.net.InetAddress;
 
+/**
+ * 
+ * Used to store the connection information of a connected client
+ *
+ */
 public class ClientConfig {
 
 	InetAddress address;

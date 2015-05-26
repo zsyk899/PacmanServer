@@ -41,22 +41,9 @@ public class MainMenu{
 	}
 	
 	/**
-	 * 
 	 * Draws all the buttons in the MainMenu. Each button corresponds to a OnClick state located 
-	 * in PacManGame.java.
-	 * 
 	 */
 	public void draw(){
-		if(!ClientMap.isEmpty()){
-			ArrayList<ClientConfig> clients = ClientMap.getClients();
-			for(int i = 0; i < clients.size(); i++){				
-				
-				ClientConfig client = clients.get(i);
-				
-				game.canvas.putText("Client " + client.getId() + " IP: " + client.getAddress(), 50, 50+50*i);
-
-			}
-		}
 		connectButton.draw();
 		quitButton.draw();
 	}
