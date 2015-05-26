@@ -48,8 +48,8 @@ public class EventHandler extends Thread {
 			if(msg.containsKey("counter")&&msg.containsKey("instruction")){
 				//counter returned from client
 				int counter = Integer.valueOf(((Long) msg.get("counter")).intValue());
-				
-				JSONObject data = (JSONObject) msg.get("instruction");
+				System.out.println(counter);
+				JSONObject data = (JSONObject) parser.parse((String) msg.get("instruction"));
 				if(data.containsKey("request")){
 					int code = Integer.valueOf(((Long) data.get("request")).intValue());
 					if(code == StatusCode.USER_INPUT && data.containsKey("direction")){
