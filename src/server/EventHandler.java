@@ -44,14 +44,21 @@ public class EventHandler extends Thread {
 	private void parseMessage(String message, String address) {
 		
 		try {
-			JSONObject data = (JSONObject) parser.parse(message);
-			if(data.containsKey("request")){
-				int code = Integer.valueOf(((Long) data.get("request")).intValue());
-				if(code == StatusCode.USER_INPUT && data.containsKey("direction")){
-					Direction d = Direction.valueOf((String) data.get("direction"));
-					game.handleUserInput(address, d);
+			JSONObject msg = (JSONObject) parser.parse(message);
+			if(msg.containsKey("counter")&&msg.containsKey("instruction")){
+				//counter returned from client
+				int counter = Integer.valueOf(((Long) msg.get("counter")).intValue());
+				
+				JSONObject data = (JSONObject) msg.get("instruction");
+				if(data.containsKey("request")){
+					int code = Integer.valueOf(((Long) data.get("request")).intValue());
+					if(code == StatusCode.USER_INPUT && data.containsKey("direction")){
+						Direction d = Direction.valueOf((String) data.get("direction"));
+						game.handleUserInput(address, d);
+					}
 				}
 			}
+			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
