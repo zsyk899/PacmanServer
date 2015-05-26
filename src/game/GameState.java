@@ -12,6 +12,8 @@ import utilies.ClientMap;
 import utilies.StatusCode;
 import model.ControllableObject;
 import model.Pacman;
+import msg.Msg;
+import msg.MsgFactory;
 
 /**
  * This class controls all objects in the game
@@ -25,11 +27,15 @@ public class GameState {
 	private HashMap<String, ControllableObject> players;
 	//private Pacman pacman;
 	private MainGame game;
+	private int counter;
+    private MsgFactory msgFactory;
 	private WallController walls;
 	
 	public GameState(MainGame game){
 		this.game = game;
 		this.players = new HashMap<String, ControllableObject>();
+		this.counter = 0;
+		this.msgFactory = new MsgFactory();
 	}
 	/**
 	 * A static interface that other classes can use to get the global instance of GameState
@@ -113,6 +119,12 @@ public class GameState {
 		state.put("state", playerState);
 		state.put("request", new Integer(StatusCode.GAME_STATE));
 		state.put("num", new Integer(players.size()));
-		return state.toJSONString();
+		
+		this.counter++;
+		Msg msg = msgFactory.getNewInstance();
+		msg.setInstruction(state.toJSONString());
+		msg.setCounter(counter);
+		
+		return msg.toJString();
 	}
 }
