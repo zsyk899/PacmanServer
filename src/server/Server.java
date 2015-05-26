@@ -29,6 +29,7 @@ import utilies.PacketMessage;
 public class Server{
 		
 	DatagramSocket serverSocket;
+	EventHandler eventHandler;
 	MainGame game;
 	
 	/**
@@ -57,7 +58,7 @@ public class Server{
 			read.setDaemon(true);
 			read.start();
 			
-			EventHandler eventHandler = new EventHandler(game);
+			eventHandler = new EventHandler(game);
 			eventHandler.setDaemon(true);
 			eventHandler.start();
 			
@@ -93,8 +94,8 @@ public class Server{
 			DatagramPacket packet = new DatagramPacket(receiveData, receiveData.length);
 			serverSocket.receive(packet);
 			//serverSocket.close();
-			System.out.println(packet.getAddress());
-			System.out.println(packet.getPort());
+//			System.out.println(packet.getAddress());
+//			System.out.println(packet.getPort());
 			//ClientMap.logClient(ClientMap.getAvailableId(), messagePack.getAddress(), messagePack.getPort());
 			
 			result = new PacketMessage(packet.getAddress(), packet.getPort(), new String(packet.getData()).trim());
@@ -105,6 +106,10 @@ public class Server{
 		}		
 		return result;
 	}
+    
+    public void addCountersForClients(){
+    	eventHandler.createCounters();
+    }
     
     public void close(){
     	serverSocket.close();

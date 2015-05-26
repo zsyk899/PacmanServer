@@ -154,6 +154,7 @@ public class MainGame extends Ucigame{
 			if(!ClientMap.isEmpty()){
 				System.out.println("Game Start!");
 				connectionServer.startGame();
+				server.addCountersForClients();
 				showGameScreen();
 			}else{
 				System.out.println("cannot start as no client connected.");

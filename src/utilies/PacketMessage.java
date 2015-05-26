@@ -12,7 +12,6 @@ public class PacketMessage {
 		this.address = address;
 		this.port = port;
 		this.data = data;
-		System.out.println("Received user input: " + data);
 	}
 
 	public InetAddress getAddress() {
